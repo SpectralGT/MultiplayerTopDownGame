@@ -7,6 +7,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
+		// scene.cameras.main.startFollow(this);
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 	}
 
@@ -14,13 +15,21 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		if (this.scene.game.input.activePointer.isDown) {
 			this.pointerX = this.scene.game.input.activePointer.worldX;
 			this.pointerY = this.scene.game.input.activePointer.worldY;
+			var moveVel = new Phaser.Math.Vector2(
+				this.pointerX - this.x,
+				this.pointerY - this.y
+			);
 
-			this.setVelocity(this.pointerX - this.x, this.pointerY - this.y);
+			moveVel.normalize();
+            moveVel.multiply(new Phaser.Math.Vector2(100, 100));
+            this.setVelocity(moveVel.x,moveVel.y);
 		}
 
 		if (
-			Math.abs(Math.round(this.pointerX) - Math.round(this.x)) <= 10 &&
-			Math.abs(Math.round(this.pointerY) - Math.round(this.y)) <= 10
+			this.body.position.fuzzyEquals(
+				new Phaser.Math.Vector2(this.pointerX, this.pointerY),
+				20
+			)
 		) {
 			this.setVelocity(0, 0);
 			console.log("in position");
