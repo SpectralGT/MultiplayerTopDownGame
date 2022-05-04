@@ -4,12 +4,11 @@ import MainScene from "./scenes/MainScene";
 
 const gameConfig: Phaser.Types.Core.GameConfig= {
   width: 500,
-  height: 800,
+  height: 600,
   pixelArt:true,
   physics: {
     default: 'arcade',
     arcade: {
-      gravity: { x: 0, y: 800 },
       debug: true
     }
   },
