@@ -13,9 +13,11 @@ io.on('connection', (socket) => {
 
     players[socket.id] = {
         id: socket.id,
-        x: 100,
-        y: 100
+        x: Math.random()*100,
+        y: Math.random()*100
     }
 
-    socket.emit("players data",players);
+    socket.emit("players-data",players);
+
+    socket.broadcast.emit("new-player", players[socket.id]);
 });

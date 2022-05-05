@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+
 export default class Player extends Phaser.Physics.Arcade.Sprite {
 	pointerX: number = 0;
 	pointerY: number = 0;
@@ -11,7 +13,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 	}
 
-	update() {
+	update(socket:Socket) {
 		if (this.scene.game.input.activePointer.isDown) {
 			this.pointerX = this.scene.game.input.activePointer.worldX;
             this.pointerY = this.scene.game.input.activePointer.worldY;

@@ -1,21 +1,24 @@
 import Coin from "../classes/Coin";
 import Player from "../classes/Player";
 import {io,Socket} from "socket.io-client";
+import Enemy from "../classes/Enemy";
 export default class MainScene extends Phaser.Scene {
 	private player!: Player;
 	private coin!: Coin;
-	private socket!: Socket
+	private socket!: Socket;
+	private self: this;
 	constructor() {
 		super("MainScene");
+		this.self = this;
 	}
 	create() {
+		this.initSocket();
 		this.intiObjects();
 		this.initColliders();
-		this.initSocket();
 	}
 
 	update(time: number, delta: number): void {
-		this.player.update();
+		this.player.update(this.socket);
 	}
 
 	intiObjects(): void {
@@ -37,8 +40,16 @@ export default class MainScene extends Phaser.Scene {
 	initSocket(): void{
 		this.socket = io('http://localhost:8080');
 
-		this.socket.on("players data", (players) => {
-			console.log(players);
+		this.socket.on("players-data", (players) => {
+			Object.keys(players).forEach((key) => {
+				if (players[key].id != this.socket.id) {
+					new Enemy(this, players[key].x, players[key].y);
+				}
+			})
+		})
+
+		this.socket.on('new-player', (playerData) => {
+			new Enemy(this, playerData.x, playerData.y);
 		})
 	}
 }
