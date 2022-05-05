@@ -13,11 +13,11 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 	}
 
-	update(socket:Socket) {
+	update(socket: Socket) {
 		if (this.scene.game.input.activePointer.isDown) {
 			this.pointerX = this.scene.game.input.activePointer.worldX;
-            this.pointerY = this.scene.game.input.activePointer.worldY;
-            
+			this.pointerY = this.scene.game.input.activePointer.worldY;
+
 			var moveVel = new Phaser.Math.Vector2(
 				this.pointerX - this.x,
 				this.pointerY - this.y
