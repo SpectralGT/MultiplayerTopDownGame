@@ -17,13 +17,19 @@ io.on("connection", (socket) => {
 		y: Math.random() * 100,
 	};
 
-	socket.emit("players-data", players);
+	socket.emit("enemies-data", players);
 
-	socket.broadcast.emit("new-player", players[socket.id]);
+	socket.broadcast.emit("new-enemy", players[socket.id]);
+
+    socket.on('player-moved', (newX, newY) => {
+        players[socket.id].x = newX;
+        players[socket.id].y = newY;
+
+        socket.broadcast.emit('enemy-moved', players[socket.id]);
+    })
 
 	socket.on("disconnect", (reason) => {
 		delete players[socket.id];
-		socket.broadcast.emit("player-disconnected", socket.id);
-		console.log("player deleted", socket.id);
+		socket.broadcast.emit("enemy-disconnected", socket.id);
 	});
 });

@@ -42,7 +42,7 @@ export default class MainScene extends Phaser.Scene {
 	initSocket(): void {
 		this.socket = io("http://localhost:8080");
 
-		this.socket.on("players-data", (players) => {
+		this.socket.on("enemies-data", (players) => {
 			Object.keys(players).forEach((key) => {
 				if (players[key].id != this.socket.id) {
 					this.enemies[key] = new Enemy(this, players[key].x, players[key].y);
@@ -50,11 +50,15 @@ export default class MainScene extends Phaser.Scene {
 			});
 		});
 
-		this.socket.on("new-player", (playerData) => {
+		this.socket.on("new-enemy", (playerData) => {
 			this.enemies[playerData.id] = new Enemy(this, playerData.x, playerData.y);
 		});
 
-		this.socket.on("player-disconnected", (id) => {
+		this.socket.on("enemy-moved", (enemyData) => {
+			(this.enemies[enemyData.id] as Enemy).setPosition(enemyData.x, enemyData.y);
+		});
+
+		this.socket.on("enemy-disconnected", (id) => {
 			(this.enemies[id] as Enemy).destroy();
 			delete this.enemies[id];
 		});

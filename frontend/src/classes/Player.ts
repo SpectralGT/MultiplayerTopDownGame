@@ -26,6 +26,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			moveVel.normalize();
 			moveVel.multiply(new Phaser.Math.Vector2(100, 100));
 			this.setVelocity(moveVel.x, moveVel.y);
+			socket.emit('player-moved', this.x, this.y);
 		}
 
 		if (
