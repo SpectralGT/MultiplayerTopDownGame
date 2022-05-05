@@ -36,6 +36,8 @@ export default class MainScene extends Phaser.Scene {
 				Math.random() * this.game.canvas.width,
 				Math.random() * this.game.canvas.height
 			);
+
+			this.socket.emit('coin-collected', this.coin.x, this.coin.y);
 		});
 	}
 
@@ -57,6 +59,10 @@ export default class MainScene extends Phaser.Scene {
 		this.socket.on("enemy-moved", (enemyData) => {
 			(this.enemies[enemyData.id] as Enemy).setPosition(enemyData.x, enemyData.y);
 		});
+
+		this.socket.on('coin-collected', (newX, newY) => {
+			this.coin.setPosition(newX, newY);
+		})
 
 		this.socket.on("enemy-disconnected", (id) => {
 			(this.enemies[id] as Enemy).destroy();

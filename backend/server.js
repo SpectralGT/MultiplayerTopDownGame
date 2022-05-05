@@ -28,6 +28,10 @@ io.on("connection", (socket) => {
         socket.broadcast.emit('enemy-moved', players[socket.id]);
     })
 
+    socket.on('coin-collected', (newX, newY) => {
+        socket.broadcast.emit('coin-collected', newX, newY);
+    })
+
 	socket.on("disconnect", (reason) => {
 		delete players[socket.id];
 		socket.broadcast.emit("enemy-disconnected", socket.id);

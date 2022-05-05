@@ -7,9 +7,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	constructor(scene: Phaser.Scene, x: number, y: number) {
 		super(scene, x, y, "Player");
 
+		//adds this player instance to the scene
 		scene.add.existing(this);
 		scene.physics.add.existing(this);
+
+		//makes the player immovable by other objects
 		this.setImmovable(true);
+
+		//adds collision between player and worldbound/screen border
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 	}
 
@@ -26,16 +31,17 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 			moveVel.normalize();
 			moveVel.multiply(new Phaser.Math.Vector2(100, 100));
 			this.setVelocity(moveVel.x, moveVel.y);
-			socket.emit('player-moved', this.x, this.y);
 		}
 
 		if (
 			this.body.position.fuzzyEquals(
 				new Phaser.Math.Vector2(this.pointerX, this.pointerY),
-				15
+				10
 			)
 		) {
 			this.setVelocity(0, 0);
+		} else {
+			socket.emit("player-moved", this.x, this.y);
 		}
 	}
 }
