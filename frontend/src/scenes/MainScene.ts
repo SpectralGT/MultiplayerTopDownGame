@@ -6,15 +6,13 @@ export default class MainScene extends Phaser.Scene {
 	private player!: Player;
 	private coin!: Coin;
 	private socket!: Socket;
-	private self: this;
 	private enemies: any;
 	constructor() {
 		super("MainScene");
-		this.self = this;
 		this.enemies = {};
 	}
 	create() {
-		this.initSocket();
+		// this.initSocket();
 		this.intiObjects();
 		this.initColliders();
 	}
@@ -37,7 +35,7 @@ export default class MainScene extends Phaser.Scene {
 				Math.random() * this.game.canvas.height
 			);
 
-			this.socket.emit('coin-collected', this.coin.x, this.coin.y);
+			// this.socket.emit('coin-collected', this.coin.x, this.coin.y);
 		});
 	}
 

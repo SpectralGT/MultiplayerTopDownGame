@@ -21,10 +21,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	}
 
 	update(socket: Socket) {
-
 		//check if the pointer/cursor is clicked
 		if (this.scene.game.input.activePointer.isDown) {
-
 			//sets the pointer position to activePointer world position
 			this.pointerX = this.scene.game.input.activePointer.worldX;
 			this.pointerY = this.scene.game.input.activePointer.worldY;
@@ -34,28 +32,26 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 				this.pointerX - this.x,
 				this.pointerY - this.y
 			);
-			
+			this.rotation = Phaser.Math.Angle.Between(this.x, this.y, this.pointerX, this.pointerY);
+
 			moveDir.normalize();
 
 			//sets the player velocity according to direction and speed
-			this.setVelocity(moveDir.x*this.speed, moveDir.y*this.speed);
+			this.setVelocity(moveDir.x * this.speed, moveDir.y * this.speed);
 		}
-
 
 		//check if the player reached the destination
 		if (
 			this.body.position.fuzzyEquals(
 				new Phaser.Math.Vector2(this.pointerX, this.pointerY),
-				10
+				15
 			)
 		) {
-
 			//stop the player from moving forward then destination
 			this.setVelocity(0, 0);
 		} else {
-
 			//transmit the new position to server
-			socket.emit("player-moved", this.x, this.y);
+			// socket.emit("player-moved", this.x, this.y);
 		}
 	}
 }
