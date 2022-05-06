@@ -32,13 +32,19 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 				this.pointerX - this.x,
 				this.pointerY - this.y
 			);
-			this.rotation = Phaser.Math.Angle.Between(this.x, this.y, this.pointerX, this.pointerY);
 
 			moveDir.normalize();
 
 			//sets the player velocity according to direction and speed
 			this.setVelocity(moveDir.x * this.speed, moveDir.y * this.speed);
 		}
+
+		//smoothly rotated the player to look at pointer
+		this.rotation = Phaser.Math.Angle.RotateTo(
+			this.rotation,
+			Phaser.Math.Angle.Between(this.x, this.y, this.pointerX, this.pointerY),
+			0.1
+		);
 
 		//check if the player reached the destination
 		if (
