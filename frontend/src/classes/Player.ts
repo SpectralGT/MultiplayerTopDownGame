@@ -7,7 +7,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	speed = 100;
 
 	constructor(scene: Phaser.Scene, x: number, y: number) {
-		super(scene, x, y, "Player");
+		super(scene, x, y, "player",2);
 
 		//adds this player instance to the scene
 		scene.add.existing(this);
