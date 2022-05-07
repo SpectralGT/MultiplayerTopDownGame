@@ -26,7 +26,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 
 		//sets the collision box to a circle
-		this.body.setCircle(24, -1, -16);
+		this.body.setCircle(16, 8, -8);
 	}
 
 	update(socket: Socket) {
