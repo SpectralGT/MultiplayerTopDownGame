@@ -7,12 +7,19 @@ export default class MainScene extends Phaser.Scene {
 	private coin!: Coin;
 	private socket!: Socket;
 	private enemies: any;
+
+	private map!: Phaser.Tilemaps.Tilemap;
+	private tileset!: Phaser.Tilemaps.Tileset;
+	private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
+	private groundLayer!: Phaser.Tilemaps.TilemapLayer;
+
 	constructor() {
 		super("MainScene");
 		this.enemies = {};
 	}
 	create() {
 		// this.initSocket();
+		this.initTileMap();
 		this.intiObjects();
 		this.initColliders();
 	}
@@ -22,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	intiObjects(): void {
-		this.player = new Player(this, 0, 0);
+		this.player = new Player(this, 10, 10);
 		this.coin = new Coin(this, 100, 100);
 	}
 
@@ -37,6 +44,8 @@ export default class MainScene extends Phaser.Scene {
 
 			// this.socket.emit('coin-collected', this.coin.x, this.coin.y);
 		});
+
+		this.physics.add.collider(this.player, this.wallsLayer);
 	}
 
 	initSocket(): void {
@@ -55,16 +64,42 @@ export default class MainScene extends Phaser.Scene {
 		});
 
 		this.socket.on("enemy-moved", (enemyData) => {
-			(this.enemies[enemyData.id] as Enemy).setPosition(enemyData.x, enemyData.y);
+			(this.enemies[enemyData.id] as Enemy).setPosition(
+				enemyData.x,
+				enemyData.y
+			);
 		});
 
-		this.socket.on('coin-collected', (newX, newY) => {
+		this.socket.on("coin-collected", (newX, newY) => {
 			this.coin.setPosition(newX, newY);
-		})
+		});
 
 		this.socket.on("enemy-disconnected", (id) => {
 			(this.enemies[id] as Enemy).destroy();
 			delete this.enemies[id];
 		});
+	}
+
+	initTileMap(): void {
+		this.map = this.make.tilemap({
+			key: "map",
+		});
+
+		this.tileset = this.map.addTilesetImage("Tileset", "tiles");
+
+		this.groundLayer = this.map.createLayer("Ground", this.tileset, 0, 0);
+
+		this.wallsLayer = this.map.createLayer("Walls", this.tileset, 0, 0);
+		this.wallsLayer.setCollisionByProperty({ Collidable: true });
+
+		this.wallsLayer.setScale(2);
+		this.groundLayer.setScale(2);
+
+		this.physics.world.setBounds(
+			0,
+			0,
+			this.wallsLayer.width,
+			this.wallsLayer.height
+		);
 	}
 }
