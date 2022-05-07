@@ -29,7 +29,7 @@ export default class MainScene extends Phaser.Scene {
 	}
 
 	intiObjects(): void {
-		this.player = new Player(this, 10, 10);
+		this.player = new Player(this, 400, 400);
 		this.coin = new Coin(this, 100, 100);
 	}
 

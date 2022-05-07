@@ -15,9 +15,13 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		//makes the player immovable by other objects
 		this.setImmovable(true);
+		this.setPushable(false);
 
 		//adds collision between player and worldbound/screen border
 		this.setCollideWorldBounds(true, 0.5, 0.5);
+
+		//sets the collision box to a circle
+		this.body.setCircle(24,-1,-16);
 	}
 
 	update(socket: Socket) {
