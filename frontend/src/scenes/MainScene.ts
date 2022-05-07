@@ -98,8 +98,8 @@ export default class MainScene extends Phaser.Scene {
 		this.physics.world.setBounds(
 			0,
 			0,
-			this.wallsLayer.width,
-			this.wallsLayer.height
+			this.wallsLayer.width *2,
+			this.wallsLayer.height*2
 		);
 	}
 }
