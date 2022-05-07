@@ -17,6 +17,9 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 		this.setImmovable(true);
 		this.setPushable(false);
 
+		//makes the camera follow the player
+		this.scene.cameras.main.startFollow(this);
+
 		//adds collision between player and worldbound/screen border
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 
