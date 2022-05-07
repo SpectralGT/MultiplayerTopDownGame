@@ -7,7 +7,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 	speed = 100;
 
 	constructor(scene: Phaser.Scene, x: number, y: number) {
-		super(scene, x, y, "player",2);
+		super(scene, x, y, "player", 2);
 
 		//adds this player instance to the scene
 		scene.add.existing(this);
@@ -19,12 +19,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
 
 		//makes the camera follow the player
 		this.scene.cameras.main.startFollow(this);
+		//zoom the camera
+		this.scene.cameras.main.setZoom(1.5);
 
 		//adds collision between player and worldbound/screen border
 		this.setCollideWorldBounds(true, 0.5, 0.5);
 
 		//sets the collision box to a circle
-		this.body.setCircle(24,-1,-16);
+		this.body.setCircle(24, -1, -16);
 	}
 
 	update(socket: Socket) {
